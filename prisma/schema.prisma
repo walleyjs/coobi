@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String       @id @default(uuid())
+  username              String   @unique
+  email                 String   @unique
+  fullName              String
+  substancesHistory     String[]
+  timezone              String   @default("UTC")
+  preferredLanguage     String   @default("en-US")
+  notificationPreferences Json   @default("{\"push\": true, \"email\": false, \"sms\": false}")
+  wearableConnections   Json     @default("{\"fitbit\": null, \"apple_health\": null, \"google_fit\": null, \"oura\": null}")
+  therapistId           String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  lastLoginAt           DateTime?
+  isActive              Boolean  @default(true)
+  exerciseStepResponses ExerciseStepResponse[]
+  stressMetrics         StressMetric[]
+  sleepMetrics          SleepMetric[]
+  activityMetrics       ActivityMetric[]
+
+  @@index([therapistId], name: "idx_users_therapist_id")
+}
+
+model Exercise {
+    id        String       @id @default(uuid())
+  slug      String         @unique
+  category  String?
+  isActive  Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  steps     ExerciseStep[]
+}
+
+model ExerciseStep {
+   id        String       @id @default(uuid())
+  exercise             Exercise               @relation(fields: [exerciseId], references: [id])
+  exerciseId           String
+  stepOrder            Int
+  type                 String // e.g. "question", "info", "input"
+  content              Json // Localized text, prompt, options
+  logic                Json? // Branching logic (optional)
+  createdAt            DateTime               @default(now())
+  ExerciseStepResponse ExerciseStepResponse[]
+}
+
+model ExerciseStepResponse {
+  id        String       @id @default(uuid())
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String
+  step      ExerciseStep @relation(fields: [stepId], references: [id])
+  stepId    String
+  response  Json
+  createdAt DateTime     @default(now())
+}
+
+model StressMetric {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  timestamp DateTime
+  score     Int
+  trigger   String?
+  source    String
+  rawData   Json?
+  createdAt DateTime @default(now())
+  @@index([userId, timestamp], name: "idx_stress_user_timestamp")
+}
+
+model SleepMetric {
+  id                String   @id @default(uuid())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+  date              DateTime
+  startTime         DateTime?
+  endTime           DateTime?
+  totalMinutes      Int
+  deepSleepMinutes  Int?
+  remSleepMinutes   Int?
+  lightSleepMinutes Int?
+  awakeMinutes      Int?
+  hrv               Float?
+  source            String
+  createdAt         DateTime @default(now())
+  @@index([userId, date], name: "idx_sleep_user_date")
+}
+
+model ActivityMetric {
+  id                  String   @id @default(uuid())
+  user                User     @relation(fields: [userId], references: [id])
+  userId              String
+  date                DateTime
+  steps               Int      @default(0)
+  caloriesBurned      Int?
+  activeMinutesLow    Int?
+  activeMinutesModerate Int?
+  activeMinutesHigh   Int?
+  heartRateMin        Int?
+  heartRateMax        Int?
+  heartRateAvg        Int?
+  source              String
+  rawData             Json?
+  createdAt           DateTime @default(now())
+  @@index([userId, date], name: "idx_activity_user_date")
+}

@@ -16,8 +16,8 @@ This project is a backend system for delivering tailored micro-interventions (re
 
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
-   cd <your-repo-directory>
+   git clone https://github.com/walleyjs/coobi-task.git
+   cd coobi-task
    ```
 
 2. **Install dependencies:**

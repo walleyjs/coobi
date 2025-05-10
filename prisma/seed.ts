@@ -33,6 +33,36 @@ const userData = [
     updatedAt: new Date(),
     lastLoginAt: null
   },
+  {
+    username: 'test_question_end',
+    email: 'test_question_end@example.com',
+    fullName: 'Test Question End',
+    substancesHistory: [],
+    timezone: 'UTC',
+    preferredLanguage: 'en-US',
+    notificationPreferences: { push: true, email: false, sms: false },
+    wearableConnections: { fitbit: null, apple_health: null, google_fit: null, oura: null },
+    therapistId: null,
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    lastLoginAt: null
+  },
+  {
+    username: 'confidence_user',
+    email: 'confidence_user@example.com',
+    fullName: 'Confidence User',
+    substancesHistory: [],
+    timezone: 'UTC',
+    preferredLanguage: 'en-US',
+    notificationPreferences: { push: true, email: false, sms: false },
+    wearableConnections: { fitbit: null, apple_health: null, google_fit: null, oura: null },
+    therapistId: null,
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    lastLoginAt: null
+  },
 ]
 
 const exerciseData = [
@@ -64,19 +94,23 @@ const exerciseData = [
           logic: {
             if_answer: 'yes',
             next_step: 2,
-            else: null
+            else: 3
           }
         },
         {
           stepOrder: 2,
           type: 'reflection',
           content: {
-            en: {
-              prompt: 'How can you avoid this kind of triggers in future?'
-            },
-            de: {
-              prompt: 'Wie können Sie solche Auslöser in Zukunft vermeiden?'
-            }
+            en: { prompt: 'What triggered your self-doubt most recently?' },
+            de: { prompt: 'Was hat Ihre Selbstzweifel zuletzt ausgelöst?' }
+          }
+        },
+        {
+          stepOrder: 3,
+          type: 'info',
+          content: {
+            en: { prompt: 'Great! Keep focusing on your strengths.' },
+            de: { prompt: 'Super! Konzentrieren Sie sich weiterhin auf Ihre Stärken.' }
           }
         }
       ]
@@ -92,8 +126,41 @@ const exerciseData = [
           stepOrder: 1,
           type: 'info',
           content: {
-            en: { prompt: "Let's try a breathing exercise for stress relief." },
-            de: { prompt: "Lass uns eine Atemübung zur Stressbewältigung machen." }
+            en: { prompt: "Let's try a breathing exercise for stress relief. Sit comfortably and take a deep breath in..." },
+            de: { prompt: "Lass uns eine Atemübung zur Stressbewältigung machen. Setzen Sie sich bequem hin und atmen Sie tief ein..." }
+          }
+        },
+        {
+          stepOrder: 2,
+          type: 'question',
+          content: {
+            en: {
+              prompt: 'Do you feel more relaxed now?',
+              options: [
+                { value: 'yes', label: 'Yes' },
+                { value: 'no', label: 'No, still tense' }
+              ]
+            },
+            de: {
+              prompt: 'Fühlen Sie sich jetzt entspannter?',
+              options: [
+                { value: 'yes', label: 'Ja' },
+                { value: 'no', label: 'Nein, immer noch angespannt' }
+              ]
+            }
+          },
+          logic: {
+            if_answer: 'no',
+            next_step: 3,
+            else: null
+          }
+        },
+        {
+          stepOrder: 3,
+          type: 'info',
+          content: {
+            en: { prompt: "Try repeating the breathing exercise or take a short walk." },
+            de: { prompt: "Wiederholen Sie die Atemübung oder machen Sie einen kurzen Spaziergang." }
           }
         }
       ]
@@ -109,8 +176,16 @@ const exerciseData = [
           stepOrder: 1,
           type: 'info',
           content: {
-            en: { prompt: 'Tips for better sleep: avoid screens before bed.' },
-            de: { prompt: 'Tipps für besseren Schlaf: Vermeiden Sie Bildschirme vor dem Schlafengehen.' }
+            en: { prompt: 'Tips for better sleep: avoid screens before bed, keep a regular schedule.' },
+            de: { prompt: 'Tipps für besseren Schlaf: Vermeiden Sie Bildschirme vor dem Schlafengehen, halten Sie einen regelmäßigen Zeitplan ein.' }
+          }
+        },
+        {
+          stepOrder: 2,
+          type: 'reflection',
+          content: {
+            en: { prompt: 'What is one thing you can do tonight to improve your sleep?' },
+            de: { prompt: 'Was können Sie heute Abend tun, um Ihren Schlaf zu verbessern?' }
           }
         }
       ]
@@ -128,6 +203,121 @@ const exerciseData = [
           content: {
             en: { prompt: "Let's get moving! Try a short walk or stretch." },
             de: { prompt: "Beweg dich! Mach einen kurzen Spaziergang oder dehne dich." }
+          }
+        },
+        {
+          stepOrder: 2,
+          type: 'question',
+          content: {
+            en: {
+              prompt: 'Will you set a goal for today?',
+              options: [
+                { value: 'yes', label: 'Yes, I will set a goal' },
+                { value: 'no', label: 'Not today' }
+              ]
+            },
+            de: {
+              prompt: 'Möchten Sie sich heute ein Ziel setzen?',
+              options: [
+                { value: 'yes', label: 'Ja, ich setze ein Ziel' },
+                { value: 'no', label: 'Heute nicht' }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    slug: 'psychoeducation-motivation',
+    category: 'psychoeducation',
+    isActive: true,
+    steps: {
+      create: [
+        {
+          stepOrder: 1,
+          type: 'info',
+          content: {
+            en: { prompt: "Did you know? Small daily actions can build lasting change. You're making progress!" },
+            de: { prompt: "Wussten Sie schon? Kleine tägliche Handlungen können dauerhafte Veränderungen bewirken. Sie machen Fortschritte!" }
+          }
+        }
+      ]
+    }
+  },
+  {
+    slug: 'end-on-question',
+    category: 'test',
+    isActive: true,
+    steps: {
+      create: [
+        {
+          stepOrder: 1,
+          type: 'info',
+          content: {
+            en: { prompt: "Let's check in with a final question." },
+            de: { prompt: "Lass uns mit einer letzten Frage abschließen." }
+          }
+        },
+        {
+          stepOrder: 2,
+          type: 'question',
+          content: {
+            en: {
+              prompt: "How confident do you feel about your progress today?",
+              options: [
+                { value: 'very', label: 'Very confident' },
+                { value: 'somewhat', label: 'Somewhat confident' },
+                { value: 'not', label: 'Not confident' }
+              ]
+            },
+            de: {
+              prompt: "Wie zuversichtlich fühlen Sie sich heute bezüglich Ihres Fortschritts?",
+              options: [
+                { value: 'very', label: 'Sehr zuversichtlich' },
+                { value: 'somewhat', label: 'Etwas zuversichtlich' },
+                { value: 'not', label: 'Nicht zuversichtlich' }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    slug: 'confidence-check',
+    category: 'test',
+    isActive: true,
+    steps: {
+      create: [
+        {
+          stepOrder: 1,
+          type: 'info',
+          content: {
+            en: { prompt: "Let's check your confidence for today." },
+            de: { prompt: "Lass uns heute dein Selbstvertrauen überprüfen." }
+          }
+        },
+        {
+          stepOrder: 2,
+          type: 'question',
+          content: {
+            en: {
+              prompt: "How confident do you feel about your progress today?",
+              options: [
+                { value: 'very', label: 'Very confident' },
+                { value: 'somewhat', label: 'Somewhat confident' },
+                { value: 'not', label: 'Not confident' }
+              ]
+            },
+            de: {
+              prompt: "Wie zuversichtlich fühlen Sie sich heute bezüglich Ihres Fortschritts?",
+              options: [
+                { value: 'very', label: 'Sehr zuversichtlich' },
+                { value: 'somewhat', label: 'Etwas zuversichtlich' },
+                { value: 'not', label: 'Nicht zuversichtlich' }
+              ]
+            }
           }
         }
       ]
@@ -240,6 +430,20 @@ async function main() {
         heartRateMax: 140,
         heartRateAvg: 82,
         source: 'garmin',
+        rawData: {},
+      },
+    });
+  }
+
+  const confidenceUser = await prisma.user.findUnique({ where: { email: 'confidence_user@example.com' } });
+  if (confidenceUser) {
+    await prisma.activityMetric.create({
+      data: {
+        userId: confidenceUser.id,
+        date: new Date(),
+        steps: 1000,
+        activeMinutesHigh: 5,
+        source: 'test',
         rawData: {},
       },
     });

@@ -108,13 +108,3 @@ mutation {
 - **Add new step types or branching logic** by updating the schema and seed data.
 - **Check user progress** by querying `ExerciseStepResponse` records for a user.
 
----
-
-## Credits & Contact
-- Built for the Coobi technical assessment.
-- For questions or feedback, contact [your name/email or GitHub].
-
----
-
-**Happy coding!**
-
